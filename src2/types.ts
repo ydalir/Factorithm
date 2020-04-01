@@ -19,6 +19,12 @@ export enum Conveyors {
 	MemorySplitter,
 }
 
+export enum MemoryType {
+	A,
+	B,
+	C
+}
+
 /*
 export interface Memory {
 	A: number;

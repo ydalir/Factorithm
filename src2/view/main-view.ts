@@ -2,6 +2,41 @@ import converter from '../utils/stringToConveyor';
 import getImage from './image-loader';
 import {Direction} from '../types';
 
+
+//TODO: make view its own object
+
+export const setDirectionBorder = (direction: Direction) => {
+
+}
+
+export const drawGrid = (ctx: CanvasRenderingContext2D, grid, direction) => {
+	grid.forEach((row) => {
+		row.forEach((cell) => {
+			ctx.drawImage(
+				getImage(direction, cell.type),
+				width/size*x, height/size*y,
+				width/size, height/size
+			);
+		})
+	})
+}
+
+export const setCanvasOnClick = (
+	canvasOnClick: (MouseEvent) => void,
+	canvas: HTMLCanvasElement
+) => {
+	canvas.onclick = canvasOnClick;
+}
+
+export const setDirectionOnClick = (
+	setDirection: (MouseEvent) => void,
+	buttons: NodeListOf<HTMLImageElement>
+	) => {
+		buttons.forEach((button) => {
+			button.onclick = setDirection;
+		})
+};
+
 export const initializeView = (
 	menuButtons: NodeListOf<HTMLImageElement>,
 	grid: HTMLDivElement,
@@ -10,6 +45,13 @@ export const initializeView = (
 ) => {
 	setGridSize(grid);
 	initializeButtons(menuButtons, direction);
+	initializeCanvas(canvas);
+}
+
+const initializeCanvas = (canvas: HTMLCanvasElement) => {
+	const ctx = canvas.getContext("2d");
+	ctx.fillStyle = "#eeeeee";
+	canvas.getContext("2d").fillRect(0,0,canvas.width, canvas.height);
 }
 
 const setGridSize = (grid: HTMLDivElement) => {

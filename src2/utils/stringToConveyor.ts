@@ -18,6 +18,14 @@ const stringToConveyor = (name: String): Conveyors => {
 			return Conveyors.MemorySubtractor;
 		case 'memory_splitter':
 			return Conveyors.MemorySplitter;
+		case 'up':
+			return Conveyors.MemorySplitter;
+		case 'down':
+			return Conveyors.MemorySplitter;
+		case 'left':
+			return Conveyors.MemorySplitter;
+		case 'right':
+			return Conveyors.MemorySplitter;
 	}
 }
 
