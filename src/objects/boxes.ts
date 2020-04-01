@@ -1,5 +1,4 @@
 import { Base } from './conveyors';
-import { Level } from '../types';
 import { Board } from './board';
 
 class BoxHandler {
