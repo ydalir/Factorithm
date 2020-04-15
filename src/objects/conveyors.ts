@@ -49,7 +49,6 @@ export class Base {
 export class Returner extends Base {
 	type = Conveyors.Returner;
 	update(box: Box) {
-		// TODO: Have this interact with state somehow
 		box.returned = true;
 	}
 }

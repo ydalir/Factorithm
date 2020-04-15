@@ -55,6 +55,9 @@ export class ViewClass {
 	}
 
 	initializeCanvas = () => {
+		// TODO: Resize on level change
+		this.canvas.setAttribute("height", "48")
+		this.canvas.setAttribute("width", "48")
 		this.ctx.fillStyle = "#eeeeee";
 		this.ctx.fillRect(0,0,this.canvas.width, this.canvas.height)
 	}

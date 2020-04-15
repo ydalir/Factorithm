@@ -10,6 +10,17 @@ const setSize = () => {
 	const size = width > height ? height : width;
 	grid.style.height = size + "px";
 	grid.style.width = size*1.5 + "px";
+
+	if(width > height*1.5){
+		grid.style.height = height + "px";
+		grid.style.width = height*1.5 + "px";
+		console.log("height")
+	}
+	if(height*1.5 > width) {
+		grid.style.height = width*2/3 + "px";
+		grid.style.width = width + "px";
+		console.log("width")
+	}
 }
 
 class Controller {
@@ -46,11 +57,12 @@ class Controller {
 		timerId: undefined,
 		isRunning: false,
 		update: () => {
+			// TODO: Move most of this into state
 			if(this.state.box == undefined){
 				this.state.box = {
 					x: 0,
 					y: 0,
-					value: 0,
+					value: this.state.level.input.shift(),
 					returned: false
 				}
 			} else {
@@ -60,15 +72,23 @@ class Controller {
 				this.state.board.grid[x][y].update(this.state.box);
 			}
 
+			if(this.state.box.returned){
+				// TODO: Move into state as function
+				this.state.level.actualOutput.push(this.state.box.value);
+				this.state.box = undefined;
+			}
+
 			if(this.gameLoop.failureStateDetector()) {
 				this.gameLoop.stop();
+				console.log("failed");
 				return;
 			}
 
-			if(this.state.box.returned){
-				this.state.level.actualOutput.push(this.state.box.value);
-				this.state.box = undefined;
-				console.log(this.state.level.actualOutput)
+			if(this.state.level.actualOutput.length === this.state.level.expectedOutput.length) {
+				this.gameLoop.stop();
+				console.log("ya did it")
+				// TODO: Add level completion handling
+				return;
 			}
 
 			this.gameLoop.draw();
@@ -80,14 +100,23 @@ class Controller {
 		},
 
 		failureStateDetector: () => {
+			// TODO: Move into state
+			const wrongNumber = !this.state.level.actualOutput.every((value, index) => (
+				value === this.state.level.expectedOutput[index]
+			));
+
+			if(this.state.box === undefined) {
+				return wrongNumber;
+			}
+
 			const failure = (
 				this.state.box.x < 0 ||
 				this.state.box.y < 0 ||
 				this.state.box.x >= this.state.level.size ||
 				this.state.box.y >= this.state.level.size
 			)
+
 			// TODO: Add displaying reason for failure
-			// TODO: add level submission check
 
 			return failure;
 		},
@@ -95,6 +124,7 @@ class Controller {
 		start: () => {
 			if(this.gameLoop.isRunning) return;
 			this.gameLoop.isRunning = true;
+			this.state.level.input = [...this.state.level.initialInput];
 			this.gameLoop.timerId = setInterval(this.gameLoop.update, 300);
 		},
 

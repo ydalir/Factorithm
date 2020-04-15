@@ -5,12 +5,13 @@ export class StateClass {
 	menu = {
 		selectedConveyor: Conveyors.Base,
 		selectedMemory: MemoryType.A,
-		selectedDirection: Direction.Down
+		selectedDirection: Direction.Down,
 	}
 
 	level = {
 		size: 3,
-		input: [0,0,0],
+		initialInput: [0,0,0],
+		input: [],
 		expectedOutput: [1,1,1],
 		actualOutput: []
 	}
