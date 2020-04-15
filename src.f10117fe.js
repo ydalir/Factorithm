@@ -505,7 +505,6 @@ function (_super) {
   }
 
   Returner.prototype.update = function (box) {
-    // TODO: Have this interact with state somehow
     box.returned = true;
   };
 
@@ -831,7 +830,8 @@ function () {
     };
     this.level = {
       size: 3,
-      input: [0, 0, 0],
+      initialInput: [0, 0, 0],
+      input: [],
       expectedOutput: [1, 1, 1],
       actualOutput: []
     };
@@ -982,6 +982,11 @@ function () {
     };
 
     this.initializeCanvas = function () {
+      // TODO: Resize on level change
+      _this.canvas.setAttribute("height", "48");
+
+      _this.canvas.setAttribute("width", "48");
+
       _this.ctx.fillStyle = "#eeeeee";
 
       _this.ctx.fillRect(0, 0, _this.canvas.width, _this.canvas.height);
@@ -1055,6 +1060,20 @@ exports.ViewClass = ViewClass;
 },{"./types":"src/types.ts","./image-loader":"src/image-loader.ts","./utils/stringTo":"src/utils/stringTo.ts"}],"src/index.ts":[function(require,module,exports) {
 "use strict";
 
+var __spreadArrays = this && this.__spreadArrays || function () {
+  for (var s = 0, i = 0, il = arguments.length; i < il; i++) {
+    s += arguments[i].length;
+  }
+
+  for (var r = Array(s), k = 0, i = 0; i < il; i++) {
+    for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++) {
+      r[k] = a[j];
+    }
+  }
+
+  return r;
+};
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -1072,6 +1091,18 @@ var setSize = function setSize() {
   var size = width > height ? height : width;
   grid.style.height = size + "px";
   grid.style.width = size * 1.5 + "px";
+
+  if (width > height * 1.5) {
+    grid.style.height = height + "px";
+    grid.style.width = height * 1.5 + "px";
+    console.log("height");
+  }
+
+  if (height * 1.5 > width) {
+    grid.style.height = width * 2 / 3 + "px";
+    grid.style.width = width + "px";
+    console.log("width");
+  }
 };
 
 var Controller =
@@ -1085,11 +1116,12 @@ function () {
       timerId: undefined,
       isRunning: false,
       update: function update() {
+        // TODO: Move most of this into state
         if (_this.state.box == undefined) {
           _this.state.box = {
             x: 0,
             y: 0,
-            value: 0,
+            value: _this.state.level.input.shift(),
             returned: false
           };
         } else {
@@ -1099,17 +1131,26 @@ function () {
           _this.state.board.grid[x][y].update(_this.state.box);
         }
 
-        if (_this.gameLoop.failureStateDetector()) {
-          _this.gameLoop.stop();
-
-          return;
-        }
-
         if (_this.state.box.returned) {
+          // TODO: Move into state as function
           _this.state.level.actualOutput.push(_this.state.box.value);
 
           _this.state.box = undefined;
-          console.log(_this.state.level.actualOutput);
+        }
+
+        if (_this.gameLoop.failureStateDetector()) {
+          _this.gameLoop.stop();
+
+          console.log("failed");
+          return;
+        }
+
+        if (_this.state.level.actualOutput.length === _this.state.level.expectedOutput.length) {
+          _this.gameLoop.stop();
+
+          console.log("ya did it"); // TODO: Add level completion handling
+
+          return;
         }
 
         _this.gameLoop.draw();
@@ -1120,14 +1161,23 @@ function () {
         _this.view.drawBox(_this.state.box, _this.state.level.size);
       },
       failureStateDetector: function failureStateDetector() {
+        // TODO: Move into state
+        var wrongNumber = !_this.state.level.actualOutput.every(function (value, index) {
+          return value === _this.state.level.expectedOutput[index];
+        });
+
+        if (_this.state.box === undefined) {
+          return wrongNumber;
+        }
+
         var failure = _this.state.box.x < 0 || _this.state.box.y < 0 || _this.state.box.x >= _this.state.level.size || _this.state.box.y >= _this.state.level.size; // TODO: Add displaying reason for failure
-        // TODO: add level submission check
 
         return failure;
       },
       start: function start() {
         if (_this.gameLoop.isRunning) return;
         _this.gameLoop.isRunning = true;
+        _this.state.level.input = __spreadArrays(_this.state.level.initialInput);
         _this.gameLoop.timerId = setInterval(_this.gameLoop.update, 300);
       },
       stop: function stop() {
@@ -1226,7 +1276,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38087" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "46357" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -1,5 +1,6 @@
-body {
-	font-size: 1em
+body, body button {
+	font-size: 2.5vh;
+	font-family: 'Courier New', Courier, monospace;
 }
 
 #game{
@@ -33,6 +34,34 @@ body {
 	background-color: red;
 }
 
+#menu_grid {
+	display: grid;
+	height: 100%;
+	width: 100%;
+	grid-template-columns: 1fr;
+	grid-template-rows: 10% 20% 10% 20% 10% 30%;
+	background-color: gray;
+	margin: auto;
+}
+
+#menu_grid h3, #menu_grid div {
+	text-align: center;
+}
+
+#conveyors_basic img {
+	width: 15%
+}
+
+#conveyors_memory img {
+	width: 20%;
+}
+
+#buttons_direction {
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 45% 55%;
+}
+
 #gamearea {
 	grid-column-start: 2;
 	grid-column-end: 3;
@@ -49,8 +78,8 @@ body {
 }
 
 .menu_buttons {
-	width: 20%;
-	border: 5px solid black;
+	width: 10%;
+	border: 1vh solid black;
 	-moz-user-select: none;
 	-webkit-user-select: none;
 }

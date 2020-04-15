@@ -1,0 +1,36 @@
+<!DOCTYPE html><head><meta charset="UTF-8"><title>Factorithm - Guide</title><link rel="stylesheet" type="text/css" href="guide.e38610e5.css"></head><body>
+<div class="content">
+<h1 id="here-comes-a-guide-dudududu">Here comes a guide, dudududu</h1>
+<p>TODO: add pictures and gifs</p>
+<h2 id="object">Object</h2>
+<p>The main object of the game is to manipulate the value of blocks so that they match a sequence of numbers, which can be done by placing conveyors on the playing field.
+This sequence changes based on which level you are playing.</p>
+<h2 id="levels">Levels</h2>
+<p>Levels are the main structure of the game.
+Each level consists of a sequence of initial block values, and a sequence of expected block values.
+Blocks can be checked against the expected block values using the return-conveyor.
+If the value matches the sequence of numbers the level requires, the block is accepted and a new block will appear in the top left corner.
+If the sequence has been successfully completed, the level has been beat and you can move on to the next one.
+If the block does not match the sequence of numbers, the level has been failed and you will have to rearrange your conveyors and try again.</p>
+<h2 id="blocks">Blocks</h2>
+<p>Blocks are created in the upper left corner when a simulation is started.
+They have a value and a position, which can be manipulated by conveyors.
+The initial value can be different for each level.</p>
+<h2 id="conveyors">Conveyors</h2>
+<p>Conveyors are used to manipulate blocks&#39; value and position.</p>
+<h3 id="basic-conveyors">Basic Conveyors</h3>
+<h4 id="mover">Mover</h4>
+<p>The mover-conveyor moves a block one square per tick. This is the most basic conveyor. All other conveyors, except the returning-conveyor, also move the block.</p>
+<h4 id="adder">Adder</h4>
+<p>The adder-conveyor increments the value of a block by one.</p>
+<h4 id="subtractor">Subtractor</h4>
+<p>The subtractor-conveyor decrements the value of a block by one.</p>
+<h4 id="returner">Returner</h4>
+<p>The returner-conveyor checks the value of a block against the number sequence of the current level.</p>
+<h3 id="memory-conveyors">Memory Conveyors</h3>
+<p>[Explain memory here]</p>
+<h4 id="assigner">Assigner</h4>
+<h4 id="adder-1">Adder</h4>
+<h4 id="subtractor-1">Subtractor</h4>
+<h4 id="splitter">Splitter</h4> </div>
+</body>
