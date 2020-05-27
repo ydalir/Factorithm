@@ -1,7 +1,7 @@
 import { StateClass } from './state';
 import { ViewClass } from './view';
 import { stringToConveyor, stringToDirection } from './utils/stringTo'
-import { Conveyors } from './types';
+import { MemoryType } from './types';
 
 const setSize = () => {
 	const grid = document.getElementById('grid');
@@ -14,12 +14,10 @@ const setSize = () => {
 	if(width > height*1.5){
 		grid.style.height = height + "px";
 		grid.style.width = height*1.5 + "px";
-		console.log("height")
 	}
 	if(height*1.5 > width) {
 		grid.style.height = width*2/3 + "px";
 		grid.style.width = width + "px";
-		console.log("width")
 	}
 }
 
@@ -44,10 +42,19 @@ class Controller {
 			button.onclick = this.directionButtonOnClick;
 		});
 
+		const memoryButtons: NodeListOf<HTMLButtonElement> = document.querySelectorAll(".memory_buttons");
+		memoryButtons.forEach((button: HTMLButtonElement) => {
+			button.onclick = this.memoryOnClick;
+		});
+
 		// TEMP remove later
-		(document.querySelector("#tmpbutton") as HTMLElement).onclick = this.gameLoop.start;
-		(document.querySelector("#tmpbutton2") as HTMLElement).onclick = this.gameLoop.stop;
+		(document.querySelector("#prev_level") as HTMLElement).onclick = this.prevLevelOnClick;
+		(document.querySelector("#next_level") as HTMLElement).onclick = this.nextLevelOnClick;
+		(document.querySelector("#play_button") as HTMLElement).onclick = this.gameLoop.start;
+		(document.querySelector("#stop_button") as HTMLElement).onclick = this.gameLoop.stop;
 		(document.querySelector("#mover") as HTMLImageElement).onload = this.gameLoop.draw;
+		this.view.updateLevelView(this.state.menu.selectedLevel,
+			this.state.level)
 		// TEMP
 
 	}
@@ -95,8 +102,10 @@ class Controller {
 		},
 
 		draw: () => {
+			this.view.clearCanvas();
 			this.view.drawCells(this.state.board.grid, this.state.level.size);
 			this.view.drawBox(this.state.box, this.state.level.size);
+			this.view.updateMemoryView(this.state.board.memory)
 		},
 
 		failureStateDetector: () => {
@@ -133,15 +142,22 @@ class Controller {
 			clearInterval(this.gameLoop.timerId);
 
 			this.state.box = undefined;
-			this.state.board.memory = {
-				A:0,
-				B:0,
-				C:0
-			}
+			this.state.board.resetMemory();
 			this.state.level.actualOutput = []
 
 			this.gameLoop.draw();
 		},
+	}
+
+	nextLevelOnClick = (e: MouseEvent) => {
+		this.state.levelOperations.nextLevel();
+		this.view.updateLevelView(this.state.menu.selectedLevel, this.state.level);
+		console.log("test")
+	}
+
+	prevLevelOnClick = (e: MouseEvent) => {
+		this.state.levelOperations.prevLevel();
+		this.view.updateLevelView(this.state.menu.selectedLevel, this.state.level);
 	}
 
 	conveyorButtonOnClick = (e: MouseEvent) => {
@@ -154,6 +170,21 @@ class Controller {
 		const element = (e.target as HTMLImageElement);
 		this.state.menu.selectedDirection = stringToDirection(element.id);
 		this.view.updateConveyorButtonImages(this.state.menu.selectedDirection);
+	}
+
+	memoryOnClick = (e: MouseEvent) => {
+		const element = (e.target as HTMLButtonElement);
+		switch(element.value){
+			case 'a':
+				this.state.menu.selectedMemory = MemoryType.A;
+				break;
+			case 'b':
+				this.state.menu.selectedMemory = MemoryType.B;
+				break;
+			case 'c':
+				this.state.menu.selectedMemory = MemoryType.C;
+				break;
+		}
 	}
 
 	canvasOnClick = (e: MouseEvent) => {

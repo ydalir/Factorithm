@@ -1,13 +1,42 @@
 import { Conveyors, Direction, State, Level, MemoryType } from './types';
 import {Base, ConveyorFactory} from './objects/conveyors'
+import levels from './levels';
 
 export class StateClass {
 	menu = {
 		selectedConveyor: Conveyors.Base,
 		selectedMemory: MemoryType.A,
 		selectedDirection: Direction.Down,
+		selectedLevel: 0,
 	}
 
+	level = levels[this.menu.selectedLevel];
+
+	levelOperations = {
+		nextLevel: () => {
+			if(this.menu.selectedLevel == levels.length - 1){
+				return
+			}
+			this.menu.selectedLevel += 1;
+			this.levelOperations.updateLevel();
+		},
+
+		prevLevel: () => {
+			if(this.menu.selectedLevel == 0){
+				return
+			}
+			this.menu.selectedLevel -= 1;
+			this.levelOperations.updateLevel();
+		},
+
+		updateLevel: () => {
+			this.level = levels[this.menu.selectedLevel]
+		}
+	}
+
+
+
+	/*
 	level = {
 		size: 3,
 		initialInput: [0,0,0],
@@ -15,6 +44,7 @@ export class StateClass {
 		expectedOutput: [1,1,1],
 		actualOutput: []
 	}
+	*/
 
 	box = {
 		x: 0,

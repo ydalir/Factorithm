@@ -4,6 +4,7 @@
 		<meta charset="UTF-8">
 		<title>Factorithm</title>
 		<link rel="stylesheet" type="text/css" href="index.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<style>
 			#canvas {margin: auto; display: block;}
 		</style>
@@ -12,15 +13,32 @@
 		<div id="game">
 			<div id="grid">
 				<div id="appbar">
-					<h1 id="level_name"></h1>
-					<div id="level_description"></div>
-					<div id="input"></div>
-					<div id="output"></div>
-					<!-- <button id="prev_level">Prev level</button>
-					<button id="next_level">Next level</button> -->
-					<button id="tmpbutton">Start</button>
-					<button id="tmpbutton2">Stop</button>
-					<a href="./guide" target="_blank">Help</a>
+					<div id="appbar_grid">
+						<div id="level_info">
+							<div id="level_name"></div>
+							<div id="level_description"></div>
+							<div id="input"></div>
+							<div id="output"></div>
+							<button id="prev_level">Prev level</button>
+							<button id="next_level">Next level</button>
+						</div>
+						<div id="game_info">
+							<div id="memory_info">
+								<div style="border: 2px solid green" id="memory_a_display">0</div>
+								<div style="border: 2px solid red" id="memory_b_display">0</div>
+								<div style="border: 2px solid blue" id="memory_c_display">0</div>
+							</div>
+							<div id="start_stop">
+								<img src="stop.png" id="stop_button" style="width: 32px" />
+								<img src="play.png" id="play_button" style="width: 32px" />
+							</div>
+							<span id="help">
+								<a href="./guide" target="_blank">
+									<i class="material-icons" style="color: #fff">help</i>
+								</a>
+							</span>
+						</div>
+					</div>
 				</div>
 				<div id="menu">
 					<div id="menu_grid">
@@ -39,14 +57,18 @@
 							<img class="menu_buttons conveyor_buttons" id="memory_subtractor" />
 							<img class="menu_buttons conveyor_buttons" id="memory_splitter" />
 						</div>
+						<div>
+							<!--
+								<img class="menu_buttons" id="memory_a" />
+								<img class="menu_buttons" id="memory_b" />
+								<img class="menu_buttons" id="memory_c" />
+							-->
+							<button class="memory_buttons" id="memory_a" value="a">A</button>
+							<button class="memory_buttons" id="memory_b" value="b">B</button>
+							<button class="memory_buttons" id="memory_c" value="c">C</button>
+						</div>
 						<h3>Direction</h3>
 						<div id="buttons_direction">
-							<!--
-							<img class="menu_buttons" id="start" />
-							<img class="menu_buttons" id="memory_a" />
-							<img class="menu_buttons" id="memory_b" />
-							<img class="menu_buttons" id="memory_c" />
-							-->
 							<div>
 								<img class="menu_buttons direction_buttons" id="up" />
 							</div>
@@ -63,7 +85,7 @@
 				</div>
 			</div>
 		</div>
-		<script src="src/index.ts"></script>
+		<script src="src/controller.ts"></script>
 	</body>
 
 </html>
