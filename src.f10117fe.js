@@ -153,6 +153,71 @@ var MemoryType;
   MemoryType[MemoryType["B"] = 1] = "B";
   MemoryType[MemoryType["C"] = 2] = "C";
 })(MemoryType = exports.MemoryType || (exports.MemoryType = {}));
+},{}],"src/images/numbers/0.png":[function(require,module,exports) {
+module.exports = "/0.ef837218.png";
+},{}],"src/images/numbers/00.png":[function(require,module,exports) {
+module.exports = "/00.01364ce4.png";
+},{}],"src/images/numbers/1.png":[function(require,module,exports) {
+module.exports = "/1.13bdcf1d.png";
+},{}],"src/images/numbers/10.png":[function(require,module,exports) {
+module.exports = "/10.1bc94d24.png";
+},{}],"src/images/numbers/2.png":[function(require,module,exports) {
+module.exports = "/2.b2aedd60.png";
+},{}],"src/images/numbers/20.png":[function(require,module,exports) {
+module.exports = "/20.bfb4867b.png";
+},{}],"src/images/numbers/3.png":[function(require,module,exports) {
+module.exports = "/3.eb8d2a81.png";
+},{}],"src/images/numbers/30.png":[function(require,module,exports) {
+module.exports = "/30.bf8972e4.png";
+},{}],"src/images/numbers/4.png":[function(require,module,exports) {
+module.exports = "/4.a4cc1538.png";
+},{}],"src/images/numbers/40.png":[function(require,module,exports) {
+module.exports = "/40.af80690c.png";
+},{}],"src/images/numbers/5.png":[function(require,module,exports) {
+module.exports = "/5.6febe9ec.png";
+},{}],"src/images/numbers/50.png":[function(require,module,exports) {
+module.exports = "/50.fde737a7.png";
+},{}],"src/images/numbers/6.png":[function(require,module,exports) {
+module.exports = "/6.14d89bea.png";
+},{}],"src/images/numbers/60.png":[function(require,module,exports) {
+module.exports = "/60.590b539b.png";
+},{}],"src/images/numbers/7.png":[function(require,module,exports) {
+module.exports = "/7.ac72fba8.png";
+},{}],"src/images/numbers/70.png":[function(require,module,exports) {
+module.exports = "/70.dd12892e.png";
+},{}],"src/images/numbers/8.png":[function(require,module,exports) {
+module.exports = "/8.8b30aa69.png";
+},{}],"src/images/numbers/80.png":[function(require,module,exports) {
+module.exports = "/80.e219273d.png";
+},{}],"src/images/numbers/9.png":[function(require,module,exports) {
+module.exports = "/9.9c288051.png";
+},{}],"src/images/numbers/90.png":[function(require,module,exports) {
+module.exports = "/90.0f38c092.png";
+},{}],"src/images/numbers/*.png":[function(require,module,exports) {
+module.exports = {
+  "0": require("./0.png"),
+  "1": require("./1.png"),
+  "2": require("./2.png"),
+  "3": require("./3.png"),
+  "4": require("./4.png"),
+  "5": require("./5.png"),
+  "6": require("./6.png"),
+  "7": require("./7.png"),
+  "8": require("./8.png"),
+  "9": require("./9.png"),
+  "10": require("./10.png"),
+  "20": require("./20.png"),
+  "30": require("./30.png"),
+  "40": require("./40.png"),
+  "50": require("./50.png"),
+  "60": require("./60.png"),
+  "70": require("./70.png"),
+  "80": require("./80.png"),
+  "90": require("./90.png"),
+  "00": require("./00.png")
+};
+},{"./0.png":"src/images/numbers/0.png","./00.png":"src/images/numbers/00.png","./1.png":"src/images/numbers/1.png","./10.png":"src/images/numbers/10.png","./2.png":"src/images/numbers/2.png","./20.png":"src/images/numbers/20.png","./3.png":"src/images/numbers/3.png","./30.png":"src/images/numbers/30.png","./4.png":"src/images/numbers/4.png","./40.png":"src/images/numbers/40.png","./5.png":"src/images/numbers/5.png","./50.png":"src/images/numbers/50.png","./6.png":"src/images/numbers/6.png","./60.png":"src/images/numbers/60.png","./7.png":"src/images/numbers/7.png","./70.png":"src/images/numbers/70.png","./8.png":"src/images/numbers/8.png","./80.png":"src/images/numbers/80.png","./9.png":"src/images/numbers/9.png","./90.png":"src/images/numbers/90.png"}],"src/images/box.png":[function(require,module,exports) {
+module.exports = "/box.67a25be6.png";
 },{}],"src/images/base.png":[function(require,module,exports) {
 module.exports = "/base.b0b1b963.png";
 },{}],"src/images/down_mover.png":[function(require,module,exports) {
@@ -273,6 +338,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var __png_1 = __importDefault(require("./images/numbers/*.png"));
+
+var box_png_1 = __importDefault(require("./images/box.png"));
+
 var base_png_1 = __importDefault(require("./images/base.png"));
 
 var __mover_png_1 = __importDefault(require("./images/*_mover.png"));
@@ -352,7 +421,28 @@ exports.getImage = function (direction, type) {
   }
 };
 
+exports.getBoxImage = function () {
+  return images.box;
+};
+
+exports.getNumberImage = function (num) {
+  // Numbers must be from 0-99
+  var truncated = num % 100;
+  var ones = truncated % 10;
+  var tens = Math.floor(truncated / 10); // Magic, fix pls
+
+  var realTens = tens == 0 ? 19 : tens + 10 - 1;
+  return {
+    ones: images.numbers[ones],
+    tens: images.numbers[realTens]
+  };
+};
+
 var images = {
+  numbers: Object.keys(__png_1.default).map(function (key) {
+    return loadImage(__png_1.default[key]);
+  }),
+  box: loadImage(box_png_1.default),
   base: loadImage(base_png_1.default),
   mover: {
     up: loadImage(__mover_png_1.default.up),
@@ -397,7 +487,8 @@ var images = {
     right: loadImage(__memory_splitter_png_1.default.right)
   }
 };
-},{"./images/base.png":"src/images/base.png","./images/*_mover.png":"src/images/*_mover.png","./images/*_adder.png":"src/images/*_adder.png","./images/*_subtractor.png":"src/images/*_subtractor.png","./images/*_memory.png":"src/images/*_memory.png","./images/*_memory_plus.png":"src/images/*_memory_plus.png","./images/*_memory_minus.png":"src/images/*_memory_minus.png","./images/*_memory_splitter.png":"src/images/*_memory_splitter.png","./types":"src/types.ts"}],"src/objects/conveyors.ts":[function(require,module,exports) {
+console.log(images.numbers);
+},{"./images/numbers/*.png":"src/images/numbers/*.png","./images/box.png":"src/images/box.png","./images/base.png":"src/images/base.png","./images/*_mover.png":"src/images/*_mover.png","./images/*_adder.png":"src/images/*_adder.png","./images/*_subtractor.png":"src/images/*_subtractor.png","./images/*_memory.png":"src/images/*_memory.png","./images/*_memory_plus.png":"src/images/*_memory_plus.png","./images/*_memory_minus.png":"src/images/*_memory_minus.png","./images/*_memory_splitter.png":"src/images/*_memory_splitter.png","./types":"src/types.ts"}],"src/objects/conveyors.ts":[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -806,8 +897,80 @@ function Splitter(box, direction, value) {
     }
   }
 }
-},{"../types":"src/types.ts","../image-loader":"src/image-loader.ts"}],"src/state.ts":[function(require,module,exports) {
+},{"../types":"src/types.ts","../image-loader":"src/image-loader.ts"}],"src/levels.ts":[function(require,module,exports) {
+"use strict"; //import { Level } from "./types";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var Level =
+/** @class */
+function () {
+  function Level(size, input, output) {
+    this.size = size;
+    this.initialInput = input;
+    this.expectedOutput = output;
+    this.actualOutput = [];
+    this.input = [];
+  }
+
+  return Level;
+}();
+
+var level1 = new Level(3, [0, 0, 0], [1, 1, 1]);
+var level2 = {
+  name: "Adding up",
+  description: "Add one to each input using the adder-conveyor",
+  input: [1, 5, -1],
+  output: [2, 6, 0],
+  size: 3
+};
+var level3 = {
+  name: "Take it away",
+  description: "Subtract three from each input using the subtract-conveyor",
+  input: [3, 8, 0],
+  output: [0, 5, -3],
+  size: 3
+};
+var level4 = {
+  name: "Null null null",
+  description: "Turn the input into zeroes using the memory-conveyor",
+  input: [3, 8, 0],
+  output: [0, 0, 0],
+  size: 5
+};
+var level5 = {
+  name: "Two and a half boxes",
+  description: "Divide the input by two",
+  input: [2, 6, -4],
+  output: [1, 3, -2],
+  size: 5
+};
+var level6 = {
+  name: "Two and a half boxes 2: Electric boogaloo",
+  description: "Divide the input by two, round up for odd numbers",
+  input: [2, 3, 7, -3, -4],
+  output: [1, 2, 4, -2, -2],
+  size: 7
+};
+var level7 = {
+  name: "Remember the last one",
+  description: "Add the previous output to the input",
+  input: [1, 1, 1],
+  output: [1, 2, 3],
+  size: 5
+};
+var levels = [level1];
+exports.default = levels;
+},{}],"src/state.ts":[function(require,module,exports) {
 "use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -816,6 +979,8 @@ Object.defineProperty(exports, "__esModule", {
 var types_1 = require("./types");
 
 var conveyors_1 = require("./objects/conveyors");
+
+var levels_1 = __importDefault(require("./levels"));
 
 var StateClass =
 /** @class */
@@ -826,15 +991,21 @@ function () {
     this.menu = {
       selectedConveyor: types_1.Conveyors.Base,
       selectedMemory: types_1.MemoryType.A,
-      selectedDirection: types_1.Direction.Down
+      selectedDirection: types_1.Direction.Down,
+      selectedLevel: 0
     };
-    this.level = {
-      size: 3,
-      initialInput: [0, 0, 0],
-      input: [],
-      expectedOutput: [1, 1, 1],
-      actualOutput: []
-    };
+    this.levelList = levels_1.default;
+    this.level = this.levelList[this.menu.selectedLevel];
+    /*
+    level = {
+        size: 3,
+        initialInput: [0,0,0],
+        input: [],
+        expectedOutput: [1,1,1],
+        actualOutput: []
+    }
+    */
+
     this.box = {
       x: 0,
       y: 0,
@@ -883,7 +1054,7 @@ function () {
 }();
 
 exports.StateClass = StateClass;
-},{"./types":"src/types.ts","./objects/conveyors":"src/objects/conveyors.ts"}],"src/utils/stringTo.ts":[function(require,module,exports) {
+},{"./types":"src/types.ts","./objects/conveyors":"src/objects/conveyors.ts","./levels":"src/levels.ts"}],"src/utils/stringTo.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -962,8 +1133,14 @@ function () {
       var width = _this.canvas.width;
       var height = _this.canvas.height;
       _this.ctx.fillStyle = "#000000";
+      var img = image_loader_1.getBoxImage();
+      var number = image_loader_1.getNumberImage(box.value);
 
-      _this.ctx.fillRect(width / size * box.x, height / size * box.y, width / size, height / size);
+      _this.ctx.drawImage(img, width / size * box.x, height / size * box.y, width / size, height / size);
+
+      _this.ctx.drawImage(number.ones, width / size * box.x, height / size * box.y, width / size, height / size);
+
+      _this.ctx.drawImage(number.tens, width / size * box.x, height / size * box.y, width / size, height / size);
     };
 
     this.drawCells = function (grid, size) {
@@ -983,10 +1160,14 @@ function () {
 
     this.initializeCanvas = function () {
       // TODO: Resize on level change
-      _this.canvas.setAttribute("height", "48");
+      _this.canvas.setAttribute("height", "384");
 
-      _this.canvas.setAttribute("width", "48");
+      _this.canvas.setAttribute("width", "384");
 
+      _this.clearCanvas();
+    };
+
+    this.clearCanvas = function () {
       _this.ctx.fillStyle = "#eeeeee";
 
       _this.ctx.fillRect(0, 0, _this.canvas.width, _this.canvas.height);
@@ -1095,13 +1276,11 @@ var setSize = function setSize() {
   if (width > height * 1.5) {
     grid.style.height = height + "px";
     grid.style.width = height * 1.5 + "px";
-    console.log("height");
   }
 
   if (height * 1.5 > width) {
     grid.style.height = width * 2 / 3 + "px";
     grid.style.width = width + "px";
-    console.log("width");
   }
 };
 
@@ -1156,6 +1335,8 @@ function () {
         _this.gameLoop.draw();
       },
       draw: function draw() {
+        _this.view.clearCanvas();
+
         _this.view.drawCells(_this.state.board.grid, _this.state.level.size);
 
         _this.view.drawBox(_this.state.box, _this.state.level.size);
@@ -1237,8 +1418,8 @@ function () {
       button.onclick = _this.directionButtonOnClick;
     }); // TEMP remove later
 
-    document.querySelector("#tmpbutton").onclick = this.gameLoop.start;
-    document.querySelector("#tmpbutton2").onclick = this.gameLoop.stop;
+    document.querySelector("#play_button").onclick = this.gameLoop.start;
+    document.querySelector("#stop_button").onclick = this.gameLoop.stop;
     document.querySelector("#mover").onload = this.gameLoop.draw; // TEMP
   }
 
@@ -1276,7 +1457,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37931" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43149" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
