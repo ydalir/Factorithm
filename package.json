@@ -6,14 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "parcel index.html",
-    "parcel-build": "parcel build --public-url ./ index.html",
-    "publish": "npm run parcel-build && npm gh-pages -d dist"
+    "parcel-build": "node marked.js && parcel build --public-url ./ *.html",
+    "publish": "npm run parcel-build && gh-pages -d dist"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "cssnano": "^4.1.10",
+    "marked": "^0.8.2",
     "typescript": "^3.6.3"
   }
 }

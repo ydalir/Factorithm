@@ -53,9 +53,10 @@ export interface State {
 }
 
 export interface Level {
-	name: string,
-	description: string,
-	input: number[],
-	output: number[],
-	size: number,
+	size: number;
+	initialInput: Array<number>;
+	input: Array<number>;
+	expectedOutput: Array<number>;
+	actualOutput: Array<number>;
+	description: string;
 }

@@ -1,22 +1,27 @@
-import { Level } from "./types";
+//import { Level } from "./types";
 
-const level1: Level = {
-	name: "Get a move on",
-	description: "Move the box from top to the bottom using the mover-conveyor",
-	input: [1,2,5],
-	output: [1,2,5],
-	size: 3,
+class Level {
+	size: number;
+	initialInput: Array<number>;
+	input: Array<number>;
+	expectedOutput: Array<number>;
+	actualOutput: Array<number>;
+	description: string;
+	constructor(size: number, input: Array<number>, output: Array<number>, description: string){
+		this.size = size;
+		this.initialInput = input;
+		this.expectedOutput = output;
+		this.description = description;
+
+		this.actualOutput = [];
+		this.input = [];
+	}
 }
 
-const level2: Level = {
-	name: "Adding up",
-	description: "Add one to each input using the adder-conveyor",
-	input: [1, 5, -1],
-	output: [2, 6, 0],
-	size: 3,
-}
+const level1 = new Level(3, [0,0,0], [0,0,0], "Get the boys up in there buddy");
+const level2 = new Level(3, [0,0,0], [1,1,1], "Add em up fellas");
 
-const level3: Level = {
+const level3 = {
 	name: "Take it away",
 	description: "Subtract three from each input using the subtract-conveyor",
 	input: [3, 8, 0],
@@ -24,7 +29,7 @@ const level3: Level = {
 	size: 3,
 }
 
-const level4: Level = {
+const level4 = {
 	name: "Null null null",
 	description: "Turn the input into zeroes using the memory-conveyor",
 	input: [3, 8, 0],
@@ -32,7 +37,7 @@ const level4: Level = {
 	size: 5,
 }
 
-const level5: Level = {
+const level5 = {
 	name: "Two and a half boxes",
 	description: "Divide the input by two",
 	input: [2, 6, -4],
@@ -40,7 +45,7 @@ const level5: Level = {
 	size: 5,
 }
 
-const level6: Level = {
+const level6 = {
 	name: "Two and a half boxes 2: Electric boogaloo",
 	description: "Divide the input by two, round up for odd numbers",
 	input: [2, 3, 7, -3, -4],
@@ -48,7 +53,7 @@ const level6: Level = {
 	size: 7,
 }
 
-const level7: Level = {
+const level7 = {
 	name: "Remember the last one",
 	description: "Add the previous output to the input",
 	input: [1, 1, 1],
@@ -59,11 +64,6 @@ const level7: Level = {
 const levels: Level[] = [
 	level1,
 	level2,
-	level3,
-	level4,
-	level5,
-	level6,
-	level7,
 ]
 
 export default levels;

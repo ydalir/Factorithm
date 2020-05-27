@@ -28,6 +28,7 @@ export function ConveyorFactory(type: Conveyors, direction: Direction, memory_ty
 
 export class Base {
 	direction: Direction;
+	memory_type: MemoryType;
 	constructor(direction: Direction){
 		this.direction = direction;
 	}
@@ -49,7 +50,6 @@ export class Base {
 export class Returner extends Base {
 	type = Conveyors.Returner;
 	update(box: Box) {
-		// TODO: Have this interact with state somehow
 		box.returned = true;
 	}
 }
@@ -103,7 +103,6 @@ export class MemoryAssigner extends Mover {
 	type = Conveyors.MemoryAssigner;
 	memory_type: MemoryType;
 	memory: Memory;
-	value: number;
 
 	constructor(direction: Direction, memory_type: MemoryType, memory: Memory){
 		super(direction);
@@ -165,6 +164,7 @@ export class MemorySubtractor extends Mover {
 	}
 
 	update = (box: Box) => {
+		console.log(this.memory)
 		super.update(box);
 		switch(this.memory_type){
 			case MemoryType.A:

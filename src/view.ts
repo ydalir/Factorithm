@@ -1,5 +1,5 @@
-import { Direction, Conveyors } from "./types";
-import {getImage} from "./image-loader"
+import { Direction, Conveyors, Level, Memory } from "./types";
+import {getImage, getBoxImage, getNumberImage, getMinusImage, getBorderImage} from "./image-loader"
 import { stringToConveyor } from "./utils/stringTo";
 import { Base } from "./objects/conveyors";
 
@@ -21,6 +21,19 @@ export class ViewClass {
 		this.initializeButtons(direction);
 	}
 
+	updateLevelView = (index: number, level: Level) => {
+		document.querySelector("#level_name").innerHTML = "Level: " + (index + 1);
+		document.querySelector("#level_description").innerHTML = level.description;
+		document.querySelector("#input").innerHTML = level.initialInput.toString();
+		document.querySelector("#output").innerHTML = level.expectedOutput.toString();
+	}
+
+	updateMemoryView = (memory: Memory) => {
+		document.querySelector("#memory_a_display").innerHTML = memory.A.toString();
+		document.querySelector("#memory_b_display").innerHTML = memory.B.toString();
+		document.querySelector("#memory_c_display").innerHTML = memory.C.toString();
+	}
+
 	drawBox = (box, size) => {
 
 		if(box == undefined) return;
@@ -29,7 +42,30 @@ export class ViewClass {
 		const height = this.canvas.height;
 		
 		this.ctx.fillStyle = "#000000";
-		this.ctx.fillRect(width/size*box.x,height/size*box.y, width/size, height/size);
+		const img = getBoxImage();
+		const number = getNumberImage(box.value);
+		this.ctx.drawImage(
+			img,
+			width/size*box.x, height/size*box.y,
+			width/size, height/size);
+
+		this.ctx.drawImage(
+			number.ones,
+			width/size*box.x, height/size*box.y,
+			width/size, height/size);
+
+		this.ctx.drawImage(
+			number.tens,
+			width/size*box.x, height/size*box.y,
+			width/size, height/size);
+
+		if(number.isNegative){
+			const minus = getMinusImage();
+			this.ctx.drawImage(
+				minus,
+				width/size*box.x, height/size*box.y,
+				width/size, height/size);
+		}
 	}
 
 	drawCells = (grid: Array<Array<Base>>, size: number) => {
@@ -50,11 +86,26 @@ export class ViewClass {
 					width/size*x, height/size*y,
 					width/size, height/size);
 					// TODO: Modify to draw 0,0 as special cell
+
+				if(conveyor.memory_type != undefined) {
+					const border = getBorderImage(conveyor.memory_type);
+					this.ctx.drawImage(
+						border,
+						width/size*x, height/size*y,
+						width/size, height/size);
+				};
 			}
 		}
 	}
 
 	initializeCanvas = () => {
+		// TODO: Resize on level change
+		this.canvas.setAttribute("height", "384")
+		this.canvas.setAttribute("width", "384")
+		this.clearCanvas();
+	}
+
+	clearCanvas = () => {
 		this.ctx.fillStyle = "#eeeeee";
 		this.ctx.fillRect(0,0,this.canvas.width, this.canvas.height)
 	}
