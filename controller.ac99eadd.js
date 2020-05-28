@@ -971,27 +971,16 @@ function () {
     this.description = description;
     this.actualOutput = [];
     this.input = [];
+    this.completed = false;
   }
 
   return Level;
 }();
 
-var level1 = new Level(3, [0, 0, 0], [0, 0, 0], "Get the boys up in there buddy");
-var level2 = new Level(3, [0, 0, 0], [1, 1, 1], "Add em up fellas");
-var level3 = {
-  name: "Take it away",
-  description: "Subtract three from each input using the subtract-conveyor",
-  input: [3, 8, 0],
-  output: [0, 5, -3],
-  size: 3
-};
-var level4 = {
-  name: "Null null null",
-  description: "Turn the input into zeroes using the memory-conveyor",
-  input: [3, 8, 0],
-  output: [0, 0, 0],
-  size: 5
-};
+var level1 = new Level(3, [0, 0, 0], [0, 0, 0], "Move the boxes to the return square");
+var level2 = new Level(5, [0, 0, 0], [1, 1, 1], "Add one to each box");
+var level3 = new Level(5, [1, 2, 3], [-2, -1, 0], "Subtract three from each box");
+var level4 = new Level(5, [4, 2, -2], [0, 0, 0], "Output zero for all inputs");
 var level5 = {
   name: "Two and a half boxes",
   description: "Divide the input by two",
@@ -1013,7 +1002,7 @@ var level7 = {
   output: [1, 2, 3],
   size: 5
 };
-var levels = [level1, level2];
+var levels = [level1, level2, level3, level4];
 exports.default = levels;
 },{}],"src/state.ts":[function(require,module,exports) {
 "use strict";
@@ -1119,7 +1108,6 @@ function () {
       }
     };
     this.levelIndex = 0;
-    this.isRunning = false;
     this.board.resetGrid();
     this.box = undefined;
   }
@@ -1136,6 +1124,25 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var types_1 = require("../types");
+
+exports.keyToDirection = function (name) {
+  switch (name) {
+    case 'ArrowUp':
+      return types_1.Direction.Up;
+
+    case 'ArrowDown':
+      return types_1.Direction.Down;
+
+    case 'ArrowLeft':
+      return types_1.Direction.Left;
+
+    case 'ArrowRight':
+      return types_1.Direction.Right;
+
+    default:
+      return undefined;
+  }
+};
 
 exports.stringToDirection = function (name) {
   switch (name) {
@@ -1207,6 +1214,8 @@ function () {
       document.querySelector("#level_description").innerHTML = level.description;
       document.querySelector("#input").innerHTML = level.initialInput.toString();
       document.querySelector("#output").innerHTML = level.expectedOutput.toString();
+      document.querySelector("#level_status").innerHTML = level.completed ? "done_outline" : "clear";
+      document.querySelector("#level_status").style.color = level.completed ? "green" : "red";
     };
 
     this.updateMemoryView = function (memory) {
@@ -1428,9 +1437,11 @@ function () {
         }
 
         if (_this.state.level.actualOutput.length === _this.state.level.expectedOutput.length) {
-          _this.gameLoop.stop();
+          _this.state.level.completed = true;
 
-          console.log("ya did it"); // TODO: Add level completion handling
+          _this.gameLoop.stop(); //console.log("ya did it")
+          // TODO: Add level completion handling
+
 
           return;
         }
@@ -1475,22 +1486,38 @@ function () {
 
         _this.state.level.actualOutput = [];
 
+        _this.view.updateLevelView(_this.state.menu.selectedLevel, _this.state.level);
+
         _this.gameLoop.draw();
       }
     };
 
-    this.nextLevelOnClick = function (e) {
+    this.nextLevelOnClick = function () {
+      if (_this.gameLoop.isRunning) {
+        return;
+      }
+
       _this.state.levelOperations.nextLevel();
 
       _this.view.updateLevelView(_this.state.menu.selectedLevel, _this.state.level);
 
-      console.log("test");
+      _this.state.board.resetGrid();
+
+      _this.gameLoop.draw();
     };
 
-    this.prevLevelOnClick = function (e) {
+    this.prevLevelOnClick = function () {
+      if (_this.gameLoop.isRunning) {
+        return;
+      }
+
       _this.state.levelOperations.prevLevel();
 
       _this.view.updateLevelView(_this.state.menu.selectedLevel, _this.state.level);
+
+      _this.state.board.resetGrid();
+
+      _this.gameLoop.draw();
     };
 
     this.conveyorButtonOnClick = function (e) {
@@ -1498,6 +1525,18 @@ function () {
       _this.state.menu.selectedConveyor = stringTo_1.stringToConveyor(element.id);
 
       _this.view.setConveyorButtonBorderColor(element);
+    };
+
+    this.arrowKeyOnPress = function (e) {
+      var direction = stringTo_1.keyToDirection(e.key);
+
+      if (direction == undefined) {
+        return;
+      } else {
+        _this.state.menu.selectedDirection = direction;
+
+        _this.view.updateConveyorButtonImages(_this.state.menu.selectedDirection);
+      }
     };
 
     this.directionButtonOnClick = function (e) {
@@ -1562,7 +1601,8 @@ function () {
     document.querySelector("#play_button").onclick = this.gameLoop.start;
     document.querySelector("#stop_button").onclick = this.gameLoop.stop;
     document.querySelector("#mover").onload = this.gameLoop.draw;
-    this.view.updateLevelView(this.state.menu.selectedLevel, this.state.level); // TEMP
+    this.view.updateLevelView(this.state.menu.selectedLevel, this.state.level);
+    document.onkeydown = this.arrowKeyOnPress; // TEMP
   }
 
   return Controller;
@@ -1599,7 +1639,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44967" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33733" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
