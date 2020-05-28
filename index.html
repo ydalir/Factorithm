@@ -15,26 +15,29 @@
 				<div id="appbar">
 					<div id="appbar_grid">
 						<div id="level_info">
-							<div id="level_name"></div>
+							<div>
+								<span id="level_name"></span>
+								<i class="material-icons" id="level_status" style="font-size: 2em"></i>
+							</div>
 							<div id="level_description"></div>
-							<div id="input"></div>
-							<div id="output"></div>
+							<div>Input: <span id="input"></span></div>
+							<div>Output: <span id="output"></span></div>
 							<button id="prev_level">Prev level</button>
 							<button id="next_level">Next level</button>
 						</div>
 						<div id="game_info">
 							<div id="memory_info">
-								<div style="border: 2px solid green" id="memory_a_display">0</div>
-								<div style="border: 2px solid red" id="memory_b_display">0</div>
-								<div style="border: 2px solid blue" id="memory_c_display">0</div>
+								<div style="border: 0.25em solid green" id="memory_a_display">0</div>
+								<div style="border: 0.25em solid red" id="memory_b_display">0</div>
+								<div style="border: 0.25em solid blue" id="memory_c_display">0</div>
 							</div>
 							<div id="start_stop">
-								<img src="stop.png" id="stop_button" style="width: 32px" />
-								<img src="play.png" id="play_button" style="width: 32px" />
+								<img src="stop.png" id="stop_button"/>
+								<img src="play.png" id="play_button"/>
 							</div>
 							<span id="help">
 								<a href="./guide" target="_blank">
-									<i class="material-icons" style="color: #fff">help</i>
+									<i class="material-icons" style="color: #4863A0; font-size: 2em">help</i>
 								</a>
 							</span>
 						</div>

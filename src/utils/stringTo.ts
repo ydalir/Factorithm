@@ -1,5 +1,21 @@
 import {Conveyors, Direction} from '../types';
 
+
+export const keyToDirection = (name: String): Direction => {
+	switch(name){
+		case 'ArrowUp':
+			return Direction.Up;
+		case 'ArrowDown':
+			return Direction.Down;
+		case 'ArrowLeft':
+			return Direction.Left;
+		case 'ArrowRight':
+			return Direction.Right;
+		default:
+			return undefined
+	}
+}
+
 export const stringToDirection = (name: String): Direction => {
 	switch(name){
 		case 'up':

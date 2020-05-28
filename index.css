@@ -112,7 +112,7 @@ body, body button {
 #game_info {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
-	grid-template-rows: 2fr 1fr;
+	grid-template-rows: 1fr 1fr;
 	background-color: #222222;
 	color: white;
 	text-align: end;
@@ -132,6 +132,10 @@ body, body button {
 #start_stop {
 	grid-row: 2;
 	grid-column: 3;
+}
+
+#start_stop img{
+	width: 25%;
 }
 
 #help {

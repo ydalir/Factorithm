@@ -1,6 +1,6 @@
 import { StateClass } from './state';
 import { ViewClass } from './view';
-import { stringToConveyor, stringToDirection } from './utils/stringTo'
+import { stringToConveyor, stringToDirection, keyToDirection } from './utils/stringTo'
 import { MemoryType } from './types';
 
 const setSize = () => {
@@ -55,6 +55,7 @@ class Controller {
 		(document.querySelector("#mover") as HTMLImageElement).onload = this.gameLoop.draw;
 		this.view.updateLevelView(this.state.menu.selectedLevel,
 			this.state.level)
+		document.onkeydown = this.arrowKeyOnPress;
 		// TEMP
 
 	}
@@ -92,8 +93,9 @@ class Controller {
 			}
 
 			if(this.state.level.actualOutput.length === this.state.level.expectedOutput.length) {
+				this.state.level.completed = true;
 				this.gameLoop.stop();
-				console.log("ya did it")
+				//console.log("ya did it")
 				// TODO: Add level completion handling
 				return;
 			}
@@ -145,25 +147,41 @@ class Controller {
 			this.state.board.resetMemory();
 			this.state.level.actualOutput = []
 
+			this.view.updateLevelView(this.state.menu.selectedLevel, this.state.level);
 			this.gameLoop.draw();
 		},
 	}
 
-	nextLevelOnClick = (e: MouseEvent) => {
+	nextLevelOnClick = () => {
+		if(this.gameLoop.isRunning) { return; }
 		this.state.levelOperations.nextLevel();
 		this.view.updateLevelView(this.state.menu.selectedLevel, this.state.level);
-		console.log("test")
+		this.state.board.resetGrid();
+		this.gameLoop.draw();
 	}
 
-	prevLevelOnClick = (e: MouseEvent) => {
+	prevLevelOnClick = () => {
+		if(this.gameLoop.isRunning) { return; }
 		this.state.levelOperations.prevLevel();
 		this.view.updateLevelView(this.state.menu.selectedLevel, this.state.level);
+		this.state.board.resetGrid();
+		this.gameLoop.draw();
 	}
 
 	conveyorButtonOnClick = (e: MouseEvent) => {
 		const element = (e.target as HTMLImageElement);
 		this.state.menu.selectedConveyor = stringToConveyor(element.id);
 		this.view.setConveyorButtonBorderColor(element);
+	}
+
+	arrowKeyOnPress = (e: KeyboardEvent) => {
+		const direction = keyToDirection(e.key);
+		if(direction == undefined){
+			return
+		} else {
+			this.state.menu.selectedDirection = direction;
+			this.view.updateConveyorButtonImages(this.state.menu.selectedDirection);
+		}
 	}
 
 	directionButtonOnClick = (e: MouseEvent) => {

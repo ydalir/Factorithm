@@ -107,7 +107,6 @@ export class StateClass {
 	}
 
 	levelIndex: number = 0;
-	isRunning: boolean = false;
 	interval: number;
 	
 	constructor() {

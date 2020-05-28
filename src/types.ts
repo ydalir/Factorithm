@@ -59,4 +59,5 @@ export interface Level {
 	expectedOutput: Array<number>;
 	actualOutput: Array<number>;
 	description: string;
+	completed: boolean;
 }

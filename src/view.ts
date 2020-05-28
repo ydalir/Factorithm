@@ -26,6 +26,8 @@ export class ViewClass {
 		document.querySelector("#level_description").innerHTML = level.description;
 		document.querySelector("#input").innerHTML = level.initialInput.toString();
 		document.querySelector("#output").innerHTML = level.expectedOutput.toString();
+		document.querySelector("#level_status").innerHTML = level.completed?"done_outline":"clear";
+		(document.querySelector("#level_status") as HTMLElement).style.color = level.completed?"green":"red";
 	}
 
 	updateMemoryView = (memory: Memory) => {
