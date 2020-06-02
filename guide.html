@@ -7,38 +7,98 @@
 <body>
 <div class="content">
 <h1 id="here-comes-a-guide-dudududu">Here comes a guide, dudududu</h1>
-<p>TODO: add pictures and gifs</p>
-<h2 id="object">Object</h2>
-<p>The main object of the game is to manipulate the value of blocks so that they match a sequence of numbers, which can be done by placing conveyors on the playing field.
-This sequence changes based on which level you are playing.</p>
-<h2 id="levels">Levels</h2>
-<p>Levels are the main structure of the game.
-Each level consists of a sequence of initial block values, and a sequence of expected block values.
-Blocks can be checked against the expected block values using the return-conveyor.
-If the value matches the sequence of numbers the level requires, the block is accepted and a new block will appear in the top left corner.
-If the sequence has been successfully completed, the level has been beat and you can move on to the next one.
-If the block does not match the sequence of numbers, the level has been failed and you will have to rearrange your conveyors and try again.</p>
-<h2 id="blocks">Blocks</h2>
-<p>Blocks are created in the upper left corner when a simulation is started.
-They have a value and a position, which can be manipulated by conveyors.
-The initial value can be different for each level.</p>
-<h2 id="conveyors">Conveyors</h2>
-<p>Conveyors are used to manipulate blocks&#39; value and position.</p>
-<h3 id="basic-conveyors">Basic Conveyors</h3>
-<h4 id="mover">Mover</h4>
-<p>The mover-conveyor moves a block one square per tick. This is the most basic conveyor. All other conveyors, except the returning-conveyor, also move the block.</p>
-<h4 id="adder">Adder</h4>
-<p>The adder-conveyor increments the value of a block by one.</p>
-<h4 id="subtractor">Subtractor</h4>
-<p>The subtractor-conveyor decrements the value of a block by one.</p>
-<h4 id="returner">Returner</h4>
-<p>The returner-conveyor checks the value of a block against the number sequence of the current level.</p>
-<h3 id="memory-conveyors">Memory Conveyors</h3>
-<p>[Explain memory here]</p>
-<h4 id="assigner">Assigner</h4>
-<h4 id="adder-1">Adder</h4>
-<h4 id="subtractor-1">Subtractor</h4>
-<h4 id="splitter">Splitter</h4>
+<p>Welcome to Factorithm!
+Factorithm is a game about algorithms, (not so cleverly) disguised as a factory simulator.
+If you are new to this game, it might be helpful to have a look at this guide.
+It contains an explanation of the game mechanics and the goal of the game.</p>
+<h2 id="interface">Interface</h2>
+<p>An explanation of the interface might be in order.
+It wasn&#39;t easy cramming this much information into such a small interface, work with me here.</p>
+<p><img src="guide_images/interface.png" alt="Whole interface"></p>
+<p>Here is the whole thing, let&#39;s break it down a bit.</p>
+<h3 id="level-info">Level info</h3>
+<p><img src="guide_images/level_info.png" alt="Level info"></p>
+<p>This section contains information about the current level, and buttons to switch between levels.
+The first line shows which level you are currently on, and whether or not you have completed the level.</p>
+<p><img src="guide_images/level_not_completed.png" alt="Level not completed"></p>
+<p>If you see this, the level has not been completed.</p>
+<p><img src="guide_images/level_completed.png" alt="Level completed"></p>
+<p>If you see this, great job!</p>
+<p><img src="guide_images/input_output.png" alt="Input output"></p>
+<p>Next, there&#39;s the input and output.
+The input is the initial values your algorithm will recieve.
+Your goal is to manipulate the value of the input to match the output.
+In this case, you would first need to change the 1 to -2, then 2 to -1, and finally 3 to 0.</p>
+<p>Finally, there&#39;s the buttons to switch between levels.
+These should be fairly self-explanatory.</p>
+<h3 id="conveyor-picker">Conveyor picker</h3>
+<p><img src="guide_images/conveyors.png" alt="Conveyors"></p>
+<p>Here you can choose between all the different conveyors.
+These are the mathematical or computational operations that can be performed on The Box™.
+We have addition, we have subtraction, we have conditionals, we have it all.
+You can choose which direction the conveyors face by clicking the arrow keys.
+Tired of clicking the arrows all the time? You can also use the arrow keys on your keyboard!</p>
+<h3 id="memory-info">Memory info</h3>
+<p>See those sneaky little ABC buttons in the conveyor picker?
+They control which memory cell to use.</p>
+<p><img src="guide_images/memory_cells.png" alt="Memory cells"></p>
+<p>These are the memory cells.
+They allow you to store a numerical value throughout the runtime of the algorithm.
+The Memory row in the conveyor picker has all the conveyors that work with these values.</p>
+<h3 id="game-board">Game board</h3>
+<p><img src="guide_images/game_board.png" alt="Game board"></p>
+<p>This is the game board.
+This is where you place conveyors and try out your algorithms.
+When you are happy with your conveyor placement, you can press the play button to the top right to start a run.</p>
+<h2 id="game-mechanics">Game mechanics</h2>
+<h3 id="conveyors-and-the-box™">Conveyors and The Box™</h3>
+<h4 id="the-box™">The Box™</h4>
+<p>When you press play, you are given a box with a numerical value according to the level input.</p>
+<p><img src="guide_images/the_box.png" alt="The box"></p>
+<p>This is The Box™.</p>
+<p>The objective of the game is to submit The Box™ with the right numerical value for all inputs according to the level output.</p>
+<h4 id="basic-conveyors">Basic conveyors</h4>
+<p><img src="guide_images/basic_conveyors.png" alt="Basic conveyors"></p>
+<p>These are the basic conveyors.
+They can perform elementary operations on The Box™.</p>
+<p><img src="guide_images/clear_conveyor.png" alt="Clear conveyor"></p>
+<p>Except this guy, this one is just there to remove misplaced conveyors. We all make mistakes, we are human after all.</p>
+<p><img src="guide_images/movement_conveyors.png" alt="Movement conveyors"></p>
+<p>These are the movement conveyors.
+The first conveyor simply moves The Box™ one square in one direction.
+The next two conveyors either add or subtract one from the value of The Box™, and move the box.</p>
+<p><img src="guide_images/submit_conveyor.png" alt="Submit conveyor"></p>
+<p>This is the submit conveyor. Use this to submit The Box™ for review.
+If all the numerical values match the expected outputs, you done solved that level!</p>
+<h3 id="memory">Memory</h3>
+<p>Normal adding and subtracting wouldn&#39;t get us very far, would it?
+This is where it gets a bit hairy, so strap in.
+I believe in you.
+You can do it.</p>
+<h4 id="memory-cells">Memory cells</h4>
+<p><img src="guide_images/memory_cells.png" alt="Memory cells"></p>
+<p>These are the memory cells.
+They allow you to store a numerical value throughout the runtime of the algorithm.
+Using the memory conveyors, you can use these cells to perform more complex operations where you need to store a value for later.</p>
+<h4 id="memory-conveyors">Memory conveyors</h4>
+<p><img src="guide_images/memory_conveyors.png" alt="Memory conveyors"></p>
+<p>These are the memory conveyors. They perform operations on memory cells.
+Clicking the ABC buttons will choose which memory cell each conveyor is bound to.</p>
+<p><img src="guide_images/colored_border.png" alt="Colored border"></p>
+<p>The colored border in the playing field indicates which memory cell the conveyor is bound to.</p>
+<p><img src="guide_images/assignment_conveyor.png" alt="Assignment conveyor"></p>
+<p>This is the assignment conveyor.
+It sets the value of the memory cell it is bound to to be the same as the current value of the box. Using this, you can store a value for use later.</p>
+<p><img src="guide_images/memory_addition_subtraction.png" alt="Memory addition subtraction"></p>
+<p>These are the addition and subtraction conveyors.
+They increment or decrement the value of a memory cell by one.</p>
+<p><img src="guide_images/conditional_conveyor.png" alt="Conditional conveyor"></p>
+<p>Finally, there is the conditional conveyor.
+This is likely the most important conveyor in the game.
+It allows you to control the movement of The Box™ based on the value of a memory cell.
+If the value of the cell is positive, The Box™ moves in the direction of the red arrow.
+If it is negative, The Box™ moves in the direction of the blue arrow.
+If the value of the cell is zero, it moves in the direction of the black arrow.</p>
 
 </div>
 </body>

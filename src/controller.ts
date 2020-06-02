@@ -24,10 +24,12 @@ const setSize = () => {
 class Controller {
 	state: StateClass;
 	view: ViewClass;
+	lastElement: HTMLImageElement;
 
 	constructor() {
 		this.state = new StateClass();
 		this.view = new ViewClass(this.state.menu.selectedDirection);
+		this.lastElement = document.querySelector("#base")
 
 		const canvas: HTMLCanvasElement = document.querySelector("#canvas");
 		canvas.onclick = this.canvasOnClick;
@@ -47,7 +49,7 @@ class Controller {
 			button.onclick = this.memoryOnClick;
 		});
 
-		// TEMP remove later
+		// Individual selectors
 		(document.querySelector("#prev_level") as HTMLElement).onclick = this.prevLevelOnClick;
 		(document.querySelector("#next_level") as HTMLElement).onclick = this.nextLevelOnClick;
 		(document.querySelector("#play_button") as HTMLElement).onclick = this.gameLoop.start;
@@ -56,7 +58,6 @@ class Controller {
 		this.view.updateLevelView(this.state.menu.selectedLevel,
 			this.state.level)
 		document.onkeydown = this.arrowKeyOnPress;
-		// TEMP
 
 	}
 
@@ -95,8 +96,6 @@ class Controller {
 			if(this.state.level.actualOutput.length === this.state.level.expectedOutput.length) {
 				this.state.level.completed = true;
 				this.gameLoop.stop();
-				//console.log("ya did it")
-				// TODO: Add level completion handling
 				return;
 			}
 
@@ -168,10 +167,22 @@ class Controller {
 		this.gameLoop.draw();
 	}
 
+
 	conveyorButtonOnClick = (e: MouseEvent) => {
 		const element = (e.target as HTMLImageElement);
+		this.lastElement = element;
 		this.state.menu.selectedConveyor = stringToConveyor(element.id);
-		this.view.setConveyorButtonBorderColor(element);
+		switch(this.state.menu.selectedMemory){
+			case MemoryType.A:
+				this.view.setConveyorButtonBorderColor(element, "#00FF00");
+				break;
+			case MemoryType.B:
+				this.view.setConveyorButtonBorderColor(element, "#FF0000");
+				break;
+			case MemoryType.C:
+				this.view.setConveyorButtonBorderColor(element, "#0000FF");
+				break;
+		}
 	}
 
 	arrowKeyOnPress = (e: KeyboardEvent) => {
@@ -195,12 +206,24 @@ class Controller {
 		switch(element.value){
 			case 'a':
 				this.state.menu.selectedMemory = MemoryType.A;
+				this.view.setConveyorButtonBorderColor(this.lastElement, "#00FF00");
 				break;
 			case 'b':
 				this.state.menu.selectedMemory = MemoryType.B;
 				break;
 			case 'c':
 				this.state.menu.selectedMemory = MemoryType.C;
+				break;
+		}
+		switch(this.state.menu.selectedMemory){
+			case MemoryType.A:
+				this.view.setConveyorButtonBorderColor(this.lastElement, "#00FF00");
+				break;
+			case MemoryType.B:
+				this.view.setConveyorButtonBorderColor(this.lastElement, "#FF0000");
+				break;
+			case MemoryType.C:
+				this.view.setConveyorButtonBorderColor(this.lastElement, "#0000FF");
 				break;
 		}
 	}

@@ -112,12 +112,12 @@ export class ViewClass {
 		this.ctx.fillRect(0,0,this.canvas.width, this.canvas.height)
 	}
 
-	setConveyorButtonBorderColor = (element: HTMLImageElement) => {
+	setConveyorButtonBorderColor = (element: HTMLImageElement, color: string) => {
 		const buttons = document.querySelectorAll(".conveyor_buttons")
 		buttons.forEach((button: HTMLImageElement) => {
 			button.style.borderColor = "#000000"
 		});
-		element.style.borderColor = "#00FF00";
+		element.style.borderColor = color;
 	}
 
 	initializeButtons = (direction: Direction) => {
