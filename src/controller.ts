@@ -69,7 +69,7 @@ class Controller {
 			// TODO: Move most of this into state
 			if(this.state.box == undefined){
 				this.state.box = {
-					x: 0,
+					x: Math.floor(this.state.level.size/2),
 					y: 0,
 					value: this.state.level.input.shift(),
 					returned: false
@@ -236,7 +236,7 @@ class Controller {
 			const xclick = Math.floor(e.offsetX/divisor);
 			const yclick = Math.floor(e.offsetY/divisor);
 
-			if(xclick == 0 && yclick == 0) {
+			if(xclick == Math.floor(this.state.level.size/2) && yclick == 0) {
 				return;
 			}
 

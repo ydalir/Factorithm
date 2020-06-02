@@ -72,7 +72,7 @@ export class StateClass {
 
 		resetGrid: () => {
 			this.board.createGrid(this.level.size);
-			this.board.grid[0][0] = ConveyorFactory(
+			this.board.grid[Math.floor(this.level.size/2)][0] = ConveyorFactory(
 				Conveyors.Mover,
 				Direction.Down,
 				undefined,
