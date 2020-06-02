@@ -977,32 +977,14 @@ function () {
   return Level;
 }();
 
-var level1 = new Level(3, [0, 0, 0], [0, 0, 0], "Move the boxes to the return square");
-var level2 = new Level(5, [0, 0, 0], [1, 1, 1], "Add one to each box");
-var level3 = new Level(5, [1, 2, 3], [-2, -1, 0], "Subtract three from each box");
+var level1 = new Level(3, [0, 0, 0], [0, 0, 0], "Return the input unchanged");
+var level2 = new Level(3, [0, 0, 0], [1, 1, 1], "Add one to each input");
+var level3 = new Level(3, [1, 2, 3], [-2, -1, 0], "Subtract three from each input");
 var level4 = new Level(5, [4, 2, -2], [0, 0, 0], "Output zero for all inputs");
-var level5 = {
-  name: "Two and a half boxes",
-  description: "Divide the input by two",
-  input: [2, 6, -4],
-  output: [1, 3, -2],
-  size: 5
-};
-var level6 = {
-  name: "Two and a half boxes 2: Electric boogaloo",
-  description: "Divide the input by two, round up for odd numbers",
-  input: [2, 3, 7, -3, -4],
-  output: [1, 2, 4, -2, -2],
-  size: 7
-};
-var level7 = {
-  name: "Remember the last one",
-  description: "Add the previous output to the input",
-  input: [1, 1, 1],
-  output: [1, 2, 3],
-  size: 5
-};
-var levels = [level1, level2, level3, level4];
+var level5 = new Level(5, [2, 5, 1], [4, 10, 2], "Multiply input by two");
+var level6 = new Level(5, [1, 3, 1], [1, 4, 5], "Add the previous output");
+var level7 = new Level(7, [1, 2, 3], [1, 4, 9], "Square the input");
+var levels = [level1, level2, level3, level4, level5, level6, level7];
 exports.default = levels;
 },{}],"src/state.ts":[function(require,module,exports) {
 "use strict";
@@ -1059,23 +1041,12 @@ function () {
         _this.level = levels_1.default[_this.menu.selectedLevel];
       }
     };
-    /*
-    level = {
-        size: 3,
-        initialInput: [0,0,0],
-        input: [],
-        expectedOutput: [1,1,1],
-        actualOutput: []
-    }
-    */
-
     this.box = {
       x: 0,
       y: 0,
       value: 0,
       returned: false
     };
-    this.boxOperations = {};
     this.board = {
       memory: {
         A: 0,
@@ -1283,12 +1254,12 @@ function () {
       _this.ctx.fillRect(0, 0, _this.canvas.width, _this.canvas.height);
     };
 
-    this.setConveyorButtonBorderColor = function (element) {
+    this.setConveyorButtonBorderColor = function (element, color) {
       var buttons = document.querySelectorAll(".conveyor_buttons");
       buttons.forEach(function (button) {
         button.style.borderColor = "#000000";
       });
-      element.style.borderColor = "#00FF00";
+      element.style.borderColor = color;
     };
 
     this.initializeButtons = function (direction) {
@@ -1439,9 +1410,7 @@ function () {
         if (_this.state.level.actualOutput.length === _this.state.level.expectedOutput.length) {
           _this.state.level.completed = true;
 
-          _this.gameLoop.stop(); //console.log("ya did it")
-          // TODO: Add level completion handling
-
+          _this.gameLoop.stop();
 
           return;
         }
@@ -1522,9 +1491,25 @@ function () {
 
     this.conveyorButtonOnClick = function (e) {
       var element = e.target;
+      _this.lastElement = element;
       _this.state.menu.selectedConveyor = stringTo_1.stringToConveyor(element.id);
 
-      _this.view.setConveyorButtonBorderColor(element);
+      switch (_this.state.menu.selectedMemory) {
+        case types_1.MemoryType.A:
+          _this.view.setConveyorButtonBorderColor(element, "#00FF00");
+
+          break;
+
+        case types_1.MemoryType.B:
+          _this.view.setConveyorButtonBorderColor(element, "#FF0000");
+
+          break;
+
+        case types_1.MemoryType.C:
+          _this.view.setConveyorButtonBorderColor(element, "#0000FF");
+
+          break;
+      }
     };
 
     this.arrowKeyOnPress = function (e) {
@@ -1552,6 +1537,9 @@ function () {
       switch (element.value) {
         case 'a':
           _this.state.menu.selectedMemory = types_1.MemoryType.A;
+
+          _this.view.setConveyorButtonBorderColor(_this.lastElement, "#00FF00");
+
           break;
 
         case 'b':
@@ -1560,6 +1548,23 @@ function () {
 
         case 'c':
           _this.state.menu.selectedMemory = types_1.MemoryType.C;
+          break;
+      }
+
+      switch (_this.state.menu.selectedMemory) {
+        case types_1.MemoryType.A:
+          _this.view.setConveyorButtonBorderColor(_this.lastElement, "#00FF00");
+
+          break;
+
+        case types_1.MemoryType.B:
+          _this.view.setConveyorButtonBorderColor(_this.lastElement, "#FF0000");
+
+          break;
+
+        case types_1.MemoryType.C:
+          _this.view.setConveyorButtonBorderColor(_this.lastElement, "#0000FF");
+
           break;
       }
     };
@@ -1581,6 +1586,7 @@ function () {
 
     this.state = new state_1.StateClass();
     this.view = new view_1.ViewClass(this.state.menu.selectedDirection);
+    this.lastElement = document.querySelector("#base");
     var canvas = document.querySelector("#canvas");
     canvas.onclick = this.canvasOnClick;
     var conveyorButtons = document.querySelectorAll(".conveyor_buttons");
@@ -1594,7 +1600,7 @@ function () {
     var memoryButtons = document.querySelectorAll(".memory_buttons");
     memoryButtons.forEach(function (button) {
       button.onclick = _this.memoryOnClick;
-    }); // TEMP remove later
+    }); // Individual selectors
 
     document.querySelector("#prev_level").onclick = this.prevLevelOnClick;
     document.querySelector("#next_level").onclick = this.nextLevelOnClick;
@@ -1602,7 +1608,7 @@ function () {
     document.querySelector("#stop_button").onclick = this.gameLoop.stop;
     document.querySelector("#mover").onload = this.gameLoop.draw;
     this.view.updateLevelView(this.state.menu.selectedLevel, this.state.level);
-    document.onkeydown = this.arrowKeyOnPress; // TEMP
+    document.onkeydown = this.arrowKeyOnPress;
   }
 
   return Controller;
@@ -1639,7 +1645,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33733" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38793" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
