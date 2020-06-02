@@ -984,7 +984,8 @@ var level4 = new Level(5, [4, 2, -2], [0, 0, 0], "Output zero for all inputs");
 var level5 = new Level(5, [2, 5, 1], [4, 10, 2], "Multiply input by two");
 var level6 = new Level(5, [1, 3, 1], [1, 4, 5], "Add the previous output");
 var level7 = new Level(7, [1, 2, 3], [1, 4, 9], "Square the input");
-var levels = [level1, level2, level3, level4, level5, level6, level7];
+var level8 = new Level(9, [0, 0, 0, 0], [1, 3, 6, 10], "Output triangle numbers");
+var levels = [level1, level2, level3, level4, level5, level6, level7, level8];
 exports.default = levels;
 },{}],"src/state.ts":[function(require,module,exports) {
 "use strict";
@@ -1072,7 +1073,7 @@ function () {
       resetGrid: function resetGrid() {
         _this.board.createGrid(_this.level.size);
 
-        _this.board.grid[0][0] = conveyors_1.ConveyorFactory(types_1.Conveyors.Mover, types_1.Direction.Down, undefined, undefined);
+        _this.board.grid[Math.floor(_this.level.size / 2)][0] = conveyors_1.ConveyorFactory(types_1.Conveyors.Mover, types_1.Direction.Down, undefined, undefined);
       },
       updateGrid: function updateGrid(x, y) {
         _this.board.grid[x][y] = conveyors_1.ConveyorFactory(_this.menu.selectedConveyor, _this.menu.selectedDirection, _this.menu.selectedMemory, _this.board.memory);
@@ -1381,7 +1382,7 @@ function () {
         // TODO: Move most of this into state
         if (_this.state.box == undefined) {
           _this.state.box = {
-            x: 0,
+            x: Math.floor(_this.state.level.size / 2),
             y: 0,
             value: _this.state.level.input.shift(),
             returned: false
@@ -1575,7 +1576,7 @@ function () {
       var xclick = Math.floor(e.offsetX / divisor);
       var yclick = Math.floor(e.offsetY / divisor);
 
-      if (xclick == 0 && yclick == 0) {
+      if (xclick == Math.floor(_this.state.level.size / 2) && yclick == 0) {
         return;
       }
 
@@ -1645,7 +1646,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38793" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37015" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
