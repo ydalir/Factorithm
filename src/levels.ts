@@ -20,7 +20,7 @@ class Level {
 	}
 }
 
-const level1 = new Level(3, [0,0,0], [0,0,0], "Return the input unchanged.");
+const level1 = new Level(3, [0,0,0], [0,0,0], "Return the input unchanged");
 const level2 = new Level(3, [1,0,3], [2,1,4], "Add one to each input");
 const level3 = new Level(3, [1,2,3], [-2,-1,0], "Subtract three from each input");
 const level4 = new Level(5, [4,2,-2], [0,0,0], "Output zero for all inputs");
